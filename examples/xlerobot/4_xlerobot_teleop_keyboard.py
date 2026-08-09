@@ -5,7 +5,7 @@ PYTHONPATH=src python -m lerobot.robots.xlerobot.xlerobot_host --robot.id=my_xle
 
 # To Run the teleop:
 '''python
-PYTHONPATH=src python -m examples.xlerobot.teleoperate_Keyboard
+PYTHONPATH=src python -m examples.xlerobot.teleop_keyboard
 '''
 
 import time
@@ -17,7 +17,7 @@ import math
 from lerobot.robots.xlerobot import XLerobotClient, XLerobotClientConfig
 # from lerobot.utils.robot_utils import busy_wait
 from lerobot.utils.robot_utils import precise_sleep
-from lerobot.utils.visualization_utils import init_rerun, log_rerun_data
+# from lerobot.utils.visualization_utils import init_rerun, log_rerun_data
 from lerobot.model.SO101Robot import SO101Kinematics
 # from lerobot.teleoperators.keyboard.teleop_keyboard import KeyboardTeleop, KeyboardTeleopConfig
 
@@ -304,8 +304,8 @@ class SimpleTeleopArm:
                 robot.send_action(robot_action)
                 
                 # Get observation and log data
-                obs = robot.get_observation()
-                log_rerun_data(obs, robot_action)
+                # obs = robot.get_observation()
+                # log_rerun_data(obs, robot_action)
                 
             except Exception as e:
                 print(f"[{self.prefix}] IK failed at x={self.current_x:.4f}, y={self.current_y:.4f}: {e}")
@@ -414,7 +414,7 @@ def main():
         print(robot)
         return
         
-    init_rerun(session_name="xlerobot_teleop_v2")
+    # init_rerun(session_name="xlerobot_teleop_v2")
 
     #Init the keyboard instance
     keyboard_config = KeyboardTeleopConfig()
@@ -481,9 +481,9 @@ def main():
             action = {**left_action, **right_action, **head_action, **base_action}
             robot.send_action(action)
 
-            obs = robot.get_observation()
+            # obs = robot.get_observation()
             # print(f"[MAIN] Observation: {obs}")
-            log_rerun_data(obs, action)
+            # log_rerun_data(obs, action)
             # busy_wait(1.0 / FPS)
     finally:
         robot.disconnect()
