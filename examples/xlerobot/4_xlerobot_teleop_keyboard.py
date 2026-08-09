@@ -9,11 +9,12 @@ PYTHONPATH=src python -m examples.xlerobot.teleoperate_Keyboard
 '''
 
 import time
+import argparse
 import numpy as np
 import math
 
-from lerobot.robots.xlerobot import XLerobotConfig, XLerobot
-# from lerobot.robots.xlerobot import XLerobotClient, XLerobotClientConfig
+# from lerobot.robots.xlerobot import XLerobotConfig, XLerobot
+from lerobot.robots.xlerobot import XLerobotClient, XLerobotClientConfig
 # from lerobot.utils.robot_utils import busy_wait
 from lerobot.utils.robot_utils import precise_sleep
 from lerobot.utils.visualization_utils import init_rerun, log_rerun_data
@@ -388,17 +389,21 @@ class SimpleTeleopArm:
 def main():
     # Teleop parameters
     FPS = 50
-    # ip = "192.168.1.123"  # This is for zmq connection
-    ip = "localhost"  # This is for local/wired connection
+    parser = argparse.ArgumentParser(description="XLerobot keyboard teleoperation")
+    parser.add_argument("--ip", default="localhost", help="Robot IP for the ZMQ connection")
+    args = parser.parse_args()
+
+    ip = args.ip  # This is for zmq connection
+    # ip = "localhost"  # This is for local/wired connection
     robot_name = "my_xlerobot_pc"
 
     # For zmq connection
-    # robot_config = XLerobotClientConfig(remote_ip=ip, id=robot_name)
-    # robot = XLerobotClient(robot_config)    
+    robot_config = XLerobotClientConfig(remote_ip=ip, robot_name=robot_name)
+    robot = XLerobotClient(robot_config)    
 
     # For local/wired connection
-    robot_config = XLerobotConfig()
-    robot = XLerobot(robot_config)
+    # robot_config = XLerobotConfig()
+    # robot = XLerobot(robot_config)
     
     try:
         robot.connect()
